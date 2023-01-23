@@ -1,0 +1,25 @@
+server:
+  port: 8091
+
+spring:
+  application:
+    name: USER-SERVICE
+
+  rabbitmq:
+    host: localhost
+    password: guest
+    port: 15672
+    username: guest
+    publish_to_post: post.queue
+    consume_to_user: user.queue
+    exchange: user.exchange
+    routingkey: user.routingkey
+
+  datasource:
+    username: epam_user
+    url: jdbc:postgresql://localhost:5432/user_db
+    password: epam
+  jpa:
+    show-sql: 'true'
+    hibernate:
+      ddl-auto: update

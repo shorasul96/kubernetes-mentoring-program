@@ -1,0 +1,65 @@
+version: '3.6'
+
+services:
+  postgres:
+    container_name: postgresql
+    image: postgres
+    restart: always
+    env_file:
+      - docker_pg.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./docker_pg_init.sql:/docker-entrypoint-initdb.d/docker_pg_init.sql
+
+  pgadmin-compose:
+    container_name: pg_admin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "root@epam.com"
+      PGADMIN_DEFAULT_PASSWORD: "epam"
+    ports:
+      - "15432:80"
+    depends_on:
+      - postgres
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+
+  user-service:
+    container_name: user_service
+    build:
+      context: ./user-service/
+      dockerfile: Dockerfile
+    restart: on-failure
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/user_db
+      - SPRING_RABBITMQ_HOST=rabbitmq
+    depends_on:
+      - rabbitmq
+      - postgres
+    ports:
+      - '0.0.0.0:8091:8091'
+
+  post-service:
+    container_name: post_service
+    build:
+      context: ./post-service/
+      dockerfile: Dockerfile
+    restart: on-failure
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/post_db
+      - SPRING_RABBITMQ_HOST=rabbitmq
+    depends_on:
+      - rabbitmq
+      - postgres
+    ports:
+      - '0.0.0.0:8081:8081'
+
