@@ -1,6 +1,5 @@
 package com.epam.postservice;
 
-
 import com.epam.post.api.config.PostAspectsInterceptor;
 import com.epam.post.api.config.PostExceptionHandler;
 import org.springframework.boot.SpringApplication;

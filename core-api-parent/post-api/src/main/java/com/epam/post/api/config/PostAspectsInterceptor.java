@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class PostAspectsInterceptor {
 
-
     @AfterThrowing(value = "execution(* com.epam.postservice.service.impl.*.*(..))",
             throwing = "e")
     public void postServiceAfterThrowing(JoinPoint joinPoint, PostNotFoundException e) {

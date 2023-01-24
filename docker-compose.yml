@@ -9,8 +9,7 @@ services:
     restart: always
     env_file:
       - docker_user_db.env
-    ports:
-      - "0.0.0.0:54321:5432"
+    ports: ['5432:5432']
     volumes:
       - pg_user:/var/lib/postgresql/data
 
@@ -20,8 +19,7 @@ services:
     restart: always
     env_file:
       - docker_post_db.env
-    ports:
-      - "0.0.0.0:54320:5432"
+    ports: ['5433:5432']
     volumes:
       - pg_post:/var/lib/postgresql/data
 
@@ -34,45 +32,27 @@ services:
     ports:
       - "15432:80"
     depends_on:
-      - post_db
-      - user_db
-
-#  rabbitmq:
-#    image: rabbitmq:3-management-alpine
-#    container_name: 'rabbitmq'
-#    ports:
-#      - 5672:5672
-#      - 15672:15672
-#    volumes:
-#      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
-#      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+      - pg_user
+      - pg_post
 
   user-service:
     container_name: user_service
-    build:
-      context: ./user-service/
-      dockerfile: Dockerfile
+    image: epamshorasulshoazimov/user-service:1.0.0
     restart: on-failure
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://pg_user:5432/user_db
-      - SPRING_RABBITMQ_HOST=rabbitmq
+    env_file:
+      - docker_user_app.env
     depends_on:
-      - rabbitmq
       - pg_user
     ports:
       - '0.0.0.0:8091:8091'
 
   post-service:
     container_name: post_service
-    build:
-      context: ./post-service/
-      dockerfile: Dockerfile
+    image: epamshorasulshoazimov/post-service:1.0.0
     restart: on-failure
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://pg_post:5433/post_db
-      - SPRING_RABBITMQ_HOST=rabbitmq
+    env_file:
+      - docker_post_app.env
     depends_on:
-      - rabbitmq
       - pg_post
     ports:
       - '0.0.0.0:8081:8081'
@@ -82,3 +62,7 @@ volumes:
     driver: local
   pg_user:
     driver: local
+#
+#networks:
+#  my_network:
+#    external: true

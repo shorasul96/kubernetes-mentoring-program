@@ -1,6 +1,5 @@
 package com.epam.userservice;
 
-
 import com.epam.user.api.config.UserAspectsInterceptor;
 import com.epam.user.api.config.UserExceptionHandler;
 import org.springframework.boot.SpringApplication;

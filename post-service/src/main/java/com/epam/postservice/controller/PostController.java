@@ -1,6 +1,5 @@
 package com.epam.postservice.controller;
 
-
 import com.epam.post.api.dto.PostDto;
 import com.epam.post.api.dto.PostRequestDto;
 import com.epam.post.api.dto.PostTextRequestDto;
