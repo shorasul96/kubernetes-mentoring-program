@@ -1,6 +1,6 @@
 package com.epam.postservice.entity;
 
-import com.epam.core.dto.PostDto;
+import com.epam.post.api.dto.PostDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

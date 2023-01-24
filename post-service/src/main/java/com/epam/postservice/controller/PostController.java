@@ -1,8 +1,9 @@
 package com.epam.postservice.controller;
 
-import com.epam.core.dto.PostDto;
-import com.epam.core.dto.PostRequestDto;
-import com.epam.core.dto.PostTextRequestDto;
+
+import com.epam.post.api.dto.PostDto;
+import com.epam.post.api.dto.PostRequestDto;
+import com.epam.post.api.dto.PostTextRequestDto;
 import com.epam.postservice.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

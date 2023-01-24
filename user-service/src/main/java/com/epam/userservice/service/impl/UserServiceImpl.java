@@ -1,12 +1,11 @@
 package com.epam.userservice.service.impl;
 
-import com.epam.core.dto.PostDto;
-import com.epam.core.dto.UserDto;
-import com.epam.core.exceptions.EntityNotFoundException;
+import com.epam.post.api.dto.PostDto;
+import com.epam.post.api.dto.PostEventStatus;
+import com.epam.user.api.dto.UserDto;
+import com.epam.user.api.exceptions.UserNotFoundException;
 import com.epam.userservice.entity.UserEntity;
-import com.epam.userservice.mq.UserEventProducer;
 import com.epam.userservice.repository.UserRepository;
-import com.epam.userservice.service.UserEventService;
 import com.epam.userservice.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
-public class UserServiceImpl implements UserService, UserEventService {
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private UserEventProducer eventProducer;
+    //    @Autowired
+    //    private UserEventProducer eventProducer;
 
     @Override
     public boolean userExists(Long authorId) {
@@ -42,7 +41,7 @@ public class UserServiceImpl implements UserService, UserEventService {
     public UserDto getById(Long id) {
         return userRepository.findById(id)
                              .map(UserEntity::getDto)
-                             .orElseThrow(EntityNotFoundException::new);
+                             .orElseThrow(UserNotFoundException::new);
     }
 
     @Override
@@ -51,7 +50,7 @@ public class UserServiceImpl implements UserService, UserEventService {
             userRepository.deleteById(id);
             return;
         }
-        throw new EntityNotFoundException();
+        throw new UserNotFoundException();
     }
 
     @Override
@@ -67,18 +66,21 @@ public class UserServiceImpl implements UserService, UserEventService {
             );
             return entity.getDto();
         }
-        throw new EntityNotFoundException();
+        throw new UserNotFoundException();
     }
 
     @Override
     @Transactional
-    public void updateAmountOfPostsByUserId(PostDto dto) {
-        Long authorId = dto.getAuthorId();
-
-        if (!this.userExists(authorId)) {
-            eventProducer.send(dto);
-        } else {
+    public PostDto updatePostAmount(Long authorId, Long postId) {
+        PostDto postDto = new PostDto();
+        postDto.setId(postId);
+        postDto.setAuthorId(authorId);
+        if (this.userExists(authorId)) {
+            postDto.setStatus(PostEventStatus.COMPLETED);
             userRepository.updatePostAmountByUserId(authorId);
+        } else {
+            postDto.setStatus(PostEventStatus.FAILED);
         }
+        return postDto;
     }
 }

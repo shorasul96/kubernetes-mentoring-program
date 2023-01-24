@@ -1,6 +1,7 @@
 package com.epam.userservice.service;
 
-import com.epam.core.dto.UserDto;
+import com.epam.post.api.dto.PostDto;
+import com.epam.user.api.dto.UserDto;
 
 public interface UserService {
 
@@ -13,4 +14,6 @@ public interface UserService {
     void deleteById(Long id);
 
     UserDto updateById(Long id, String username);
+
+    PostDto updatePostAmount(Long id, Long postId);
 }

@@ -1,6 +1,6 @@
 package com.epam.userservice.entity;
 
-import com.epam.core.dto.UserDto;
+import com.epam.user.api.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 @Data
 @NoArgsConstructor
@@ -26,6 +27,8 @@ public class UserEntity {
     @Id
     @GeneratedValue
     private Long id;
+
+    @NotBlank(message = "The username is required.")
     private String username;
     private int amountOfPosts;
 

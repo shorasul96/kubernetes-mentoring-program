@@ -5,11 +5,11 @@
   <parent>
     <groupId>com.epam</groupId>
     <artifactId>kubernetes-mentoring-program</artifactId>
-    <version>0.0.1</version>
+    <version>1.0.0</version>
   </parent>
 
   <artifactId>user-service</artifactId>
-  <version>0.0.1</version>
+  <version>1.0.0</version>
   <name>user-service</name>
   <description>L&amp;D session k8s cource. User service</description>
 
@@ -20,14 +20,15 @@
   <dependencies>
     <dependency>
       <groupId>com.epam</groupId>
-      <artifactId>core-model</artifactId>
-      <version>0.0.1</version>
+      <artifactId>user-api</artifactId>
+      <version>1.0.0</version>
       <scope>compile</scope>
     </dependency>
-
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-amqp</artifactId>
+      <groupId>com.epam</groupId>
+      <artifactId>post-api</artifactId>
+      <version>1.0.0</version>
+      <scope>compile</scope>
     </dependency>
 
     <dependency>
@@ -40,15 +41,9 @@
       <scope>runtime</scope>
     </dependency>
 
-
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.kafka</groupId>
-      <artifactId>spring-kafka-test</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -60,6 +55,34 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
         <version>2.7.8</version>
       </plugin>
+
+<!--      <plugin>-->
+<!--        <groupId>com.spotify</groupId>-->
+<!--        <artifactId>dockerfile-maven-plugin</artifactId>-->
+<!--        <version>1.4.13</version>-->
+<!--        <executions>-->
+<!--          <execution>-->
+<!--            <id>default</id>-->
+<!--            <goals>-->
+<!--              <goal>build</goal>-->
+<!--              <goal>push</goal>-->
+<!--            </goals>-->
+<!--          </execution>-->
+<!--        </executions>-->
+<!--        <configuration>-->
+<!--          <repository>epamshorasulshoazimov/user-service</repository>-->
+<!--          <tag>${project.version}</tag>-->
+<!--          <useMavenSettingsForAuth>true</useMavenSettingsForAuth>-->
+<!--        </configuration>-->
+<!--        <dependencies>-->
+<!--          &lt;!&ndash; To make this work on JDK 9+ &ndash;&gt;-->
+<!--          <dependency>-->
+<!--            <groupId>javax.activation</groupId>-->
+<!--            <artifactId>javax.activation-api</artifactId>-->
+<!--            <version>1.2.0</version>-->
+<!--          </dependency>-->
+<!--        </dependencies>-->
+<!--      </plugin>-->
     </plugins>
   </build>
 

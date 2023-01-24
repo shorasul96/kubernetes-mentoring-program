@@ -1,10 +1,11 @@
 package com.epam.postservice.service.impl;
 
-import com.epam.core.dto.PostDto;
-import com.epam.core.dto.PostRequestDto;
-import com.epam.core.exceptions.EntityNotFoundException;
+import com.epam.post.api.dto.PostDto;
+import com.epam.post.api.dto.PostEventStatus;
+import com.epam.post.api.dto.PostRequestDto;
+import com.epam.post.api.exceptions.PostNotFoundException;
+import com.epam.postservice.client.UserFeignClient;
 import com.epam.postservice.entity.PostEntity;
-import com.epam.postservice.mq.PostEventProducer;
 import com.epam.postservice.repository.PostRepository;
 import com.epam.postservice.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,9 @@ import java.util.Date;
 public class PostServiceImpl implements PostService {
     @Autowired
     private PostRepository postRepository;
+
     @Autowired
-    private PostEventProducer eventProducer;
+    private UserFeignClient feignClient;
 
     @Override
     @Transactional
@@ -27,10 +29,14 @@ public class PostServiceImpl implements PostService {
                 .setAuthorId(post.getAuthorId())
                 .setText(post.getText())
                 .setPostedAt(new Date());
-        PostEntity createdPost = postRepository.save(entity);
+        PostEntity save = postRepository.save(entity);
 
-        eventProducer.send(createdPost.getDto());
-        return createdPost.getDto();
+        PostDto postDto = feignClient.updatePostAmountByUserId(save.getAuthorId(), save.getId());
+        if (postDto.getStatus().equals(PostEventStatus.FAILED)) {
+            throw new RuntimeException("User with id: " + postDto.getAuthorId() + ", not found");
+        }
+
+        return save.getDto();
     }
 
     @Override
@@ -45,7 +51,7 @@ public class PostServiceImpl implements PostService {
     public PostDto getPostById(Long id) {
         return postRepository.findById(id)
                              .map(PostEntity::getDto)
-                             .orElseThrow(EntityNotFoundException::new);
+                             .orElseThrow(PostNotFoundException::new);
     }
 
     @Override
@@ -55,7 +61,7 @@ public class PostServiceImpl implements PostService {
             postRepository.deleteById(id);
             return;
         }
-        throw new EntityNotFoundException();
+        throw new PostNotFoundException();
     }
 
     @Override
@@ -65,6 +71,6 @@ public class PostServiceImpl implements PostService {
             postEntity.setText(updatedText);
             postEntity.setPostedAt(new Date());
             return postRepository.save(postEntity).getDto();
-        }).orElseThrow(EntityNotFoundException::new);
+        }).orElseThrow(PostNotFoundException::new);
     }
 }

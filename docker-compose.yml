@@ -1,16 +1,29 @@
-version: '3.6'
+version: '3.8'
 
 services:
-  postgres:
-    container_name: postgresql
+
+
+  pg_user:
+    container_name: pg_user
     image: postgres
     restart: always
     env_file:
-      - docker_pg.env
+      - docker_user_db.env
     ports:
-      - "5432:5432"
+      - "0.0.0.0:54321:5432"
     volumes:
-      - ./docker_pg_init.sql:/docker-entrypoint-initdb.d/docker_pg_init.sql
+      - pg_user:/var/lib/postgresql/data
+
+  pg_post:
+    container_name: pg_post
+    image: postgres
+    restart: always
+    env_file:
+      - docker_post_db.env
+    ports:
+      - "0.0.0.0:54320:5432"
+    volumes:
+      - pg_post:/var/lib/postgresql/data
 
   pgadmin-compose:
     container_name: pg_admin
@@ -21,17 +34,18 @@ services:
     ports:
       - "15432:80"
     depends_on:
-      - postgres
+      - post_db
+      - user_db
 
-  rabbitmq:
-    image: rabbitmq:3-management-alpine
-    container_name: 'rabbitmq'
-    ports:
-      - 5672:5672
-      - 15672:15672
-    volumes:
-      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
-      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+#  rabbitmq:
+#    image: rabbitmq:3-management-alpine
+#    container_name: 'rabbitmq'
+#    ports:
+#      - 5672:5672
+#      - 15672:15672
+#    volumes:
+#      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+#      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
 
   user-service:
     container_name: user_service
@@ -40,11 +54,11 @@ services:
       dockerfile: Dockerfile
     restart: on-failure
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/user_db
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://pg_user:5432/user_db
       - SPRING_RABBITMQ_HOST=rabbitmq
     depends_on:
       - rabbitmq
-      - postgres
+      - pg_user
     ports:
       - '0.0.0.0:8091:8091'
 
@@ -55,11 +69,16 @@ services:
       dockerfile: Dockerfile
     restart: on-failure
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/post_db
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://pg_post:5433/post_db
       - SPRING_RABBITMQ_HOST=rabbitmq
     depends_on:
       - rabbitmq
-      - postgres
+      - pg_post
     ports:
       - '0.0.0.0:8081:8081'
 
+volumes:
+  pg_post:
+    driver: local
+  pg_user:
+    driver: local

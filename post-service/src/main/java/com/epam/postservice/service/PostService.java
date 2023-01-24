@@ -1,7 +1,7 @@
 package com.epam.postservice.service;
 
-import com.epam.core.dto.PostDto;
-import com.epam.core.dto.PostRequestDto;
+import com.epam.post.api.dto.PostDto;
+import com.epam.post.api.dto.PostRequestDto;
 
 public interface PostService {
 

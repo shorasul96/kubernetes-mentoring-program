@@ -7,20 +7,27 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="post-api" />
         <module name="post-service" />
         <module name="user-service" />
-        <module name="core-model" />
+        <module name="user-api" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="17">
+      <module name="common-api" target="1.8" />
       <module name="core" target="1.8" />
+      <module name="registry-service" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="common-api" options="-parameters" />
       <module name="core" options="-parameters" />
-      <module name="core-model" options="-parameters" />
+      <module name="core-api-parent" options="" />
+      <module name="post-api" options="-parameters" />
       <module name="post-service" options="-parameters" />
+      <module name="registry-service" options="-parameters" />
+      <module name="user-api" options="-parameters" />
       <module name="user-service" options="-parameters" />
     </option>
   </component>

@@ -4,22 +4,44 @@ server:
 spring:
   application:
     name: POST-SERVICE
-
-  rabbitmq:
-    host: localhost
-    password: guest
-    port: 15672
-    username: guest
-    publish_to_user: user.queue
-    consume_to_post: post.queue
-    exchange: post.exchange
-    routingkey: post.routingkey
+    user_service_url: http://localhost:8091/api/users
 
   datasource:
     username: epam_post
-    url: jdbc:postgresql://localhost:5432/post_db
+    url: jdbc:postgresql://localhost:54320/post_db
     password: epam
   jpa:
     show-sql: 'true'
     hibernate:
       ddl-auto: update
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  health:
+    circuitbreakers:
+      enabled: true
+
+feign:
+  client:
+    config:
+      httpBinClient:
+        read-timeout: 2000
+        connect-timeout: 1000
+  circuitbreaker:
+    enabled: true
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+    instances:
+      UserFeignClient_updatePostAmountByUserId_long_long:
+        minimumNumberOfCalls: 10
+        failureRateThreshold: 50
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 20s
