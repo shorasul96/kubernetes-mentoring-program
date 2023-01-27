@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: post-service-app
+  labels:
+    app: post-service-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: post-service-app
+  template:
+    metadata:
+      labels:
+        app: post-service-app
+    spec:
+      containers:
+        - name: post-service-app
+          image: epamshorasulshoazimov/post-service:1.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8081
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://pg-post-db-svc:5432/post_db
+            - name: SPRING_DATASOURCE_USERNAME
+              value: epam_post
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: epam
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: post-service-svc
+spec:
+  type: NodePort
+  ports:
+    - port: 8081
+      targetPort: 8081
+      nodePort: 30081
+  selector:
+    app: post-service-app
