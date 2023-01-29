@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service-svc
+spec:
+  type: NodePort
+  ports:
+    - name: user-service-app
+      protocol: TCP
+      port: 8091
+      targetPort: 8091
+      nodePort: 30011
+  selector:
+    app: user-service-app

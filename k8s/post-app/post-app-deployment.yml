@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: post-service-app
+  labels:
+    app: post-service-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: post-service-app
+  template:
+    metadata:
+      labels:
+        app: post-service-app
+    spec:
+      containers:
+        - name: post-service-app
+          image: epamshorasulshoazimov/post-service:1.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8081
+          envFrom:
+            - secretRef:
+                name: post-app-secrets
+            - configMapRef:
+                name: post-app-config

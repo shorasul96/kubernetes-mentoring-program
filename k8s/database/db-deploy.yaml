@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgresql
+  labels:
+    app: postgresql
+    tier: database
+spec:
+  selector:
+    matchLabels:
+      app: postgresql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: postgresql
+        tier: database
+    spec:
+      containers:
+        - name: postgresql
+          image: postgres:10.3-alpine
+          imagePullPolicy: "IfNotPresent"
+          envFrom:
+            - secretRef:
+                name: psql-secrets
+            - configMapRef:
+                name: psql-config-map
+          ports:
+            - containerPort: 5432
+              name: postgresql
+          volumeMounts:
+            - name: psql-vol
+              mountPath: /var/lib/postgresql/data
+            - name: postgresql-initdb
+              mountPath: /docker-entrypoint-initdb.d
+      volumes:
+        - name: psql-vol
+          persistentVolumeClaim:
+            claimName: psql-vol-claim
+
+        - name: postgresql-initdb
+          configMap:
+            name: psql-init-config
