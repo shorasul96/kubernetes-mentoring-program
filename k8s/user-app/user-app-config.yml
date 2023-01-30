@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata:
   name: user-app-config
 data:
-  SPRING_DATASOURCE_URL: jdbc:postgresql://postgresql:5432/user_db
+  SPRING_DATASOURCE_URL: jdbc:postgresql://user-psql:5432/user_db
   SPRING_DATASOURCE_USERNAME: epam_user

@@ -12,7 +12,8 @@ kubectl apply -f namespaces.yml
 ###
 Then next need to run postgres database, It will take some minutes to start pod
 ```sh
-kubectl apply -f database --namespace=dev
+kubectl apply -f post-psql --namespace=dev
+kubectl apply -f user-psql --namespace=dev
 ```
 ###
 Please, be sure that postgres pod is running. Then run scripts below for starting our service-applications
@@ -37,3 +38,7 @@ bash post-forward.sh
 |--------------|-------|
 | Post-service | 8081  |
 | User-service | 8091  |
+
+
+Feedbacks:  
+Load balancer

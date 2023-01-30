@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-psql
+  labels:
+    istio-injection: enabled
+    app: user-psql
+spec:
+  selector:
+    app: user-psql
+  type: ClusterIP
+  ports:
+    - port: 5432

@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-psql
+  labels:
+    app: user-psql
+    tier: database
+spec:
+  selector:
+    matchLabels:
+      app: user-psql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: user-psql
+        tier: database
+    spec:
+      containers:
+        - name: user-psql
+          image: postgres:10.3-alpine
+          imagePullPolicy: "IfNotPresent"
+          envFrom:
+            - secretRef:
+                name: user-psql-secrets
+            - configMapRef:
+                name: user-psql-config-map
+          ports:
+            - containerPort: 5432
+              name: user-psql
+          volumeMounts:
+            - name: user-psql-vol
+              mountPath: /var/user
+      volumes:
+        - name: user-psql-vol
+          persistentVolumeClaim:
+            claimName: user-psql-vol-claim
