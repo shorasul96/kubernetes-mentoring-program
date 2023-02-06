@@ -71,6 +71,7 @@
     <module>post-service</module>
     <module>user-service</module>
     <module>core-api-parent</module>
+    <module>k8s</module>
   </modules>
 
 </project>

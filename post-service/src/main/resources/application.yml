@@ -8,7 +8,7 @@ spring:
 
   datasource:
     username: epam_post
-    url: jdbc:postgresql://localhost:54320/post_db
+    url: jdbc:postgresql://localhost:5434/post_db
     password: epam
   jpa:
     show-sql: 'true'
@@ -45,3 +45,7 @@ resilience4j:
     configs:
       default:
         timeoutDuration: 20s
+
+info:
+  app:
+    version: '@project.version@'

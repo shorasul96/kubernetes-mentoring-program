@@ -3,10 +3,9 @@ kind: Service
 metadata:
   name: post-service-svc
 spec:
-  type: NodePort
   ports:
-    - port: 8081
+    - name: http
+      port: 8081
       targetPort: 8081
-      nodePort: 30081
   selector:
     app: post-service-app

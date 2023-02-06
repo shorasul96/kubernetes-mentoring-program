@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: user-apis
+  namespace: kong
+  annotations:
+    konghq.com/strip-path: "true"
+    kubernetes.io/ingress.class: kong
+spec:
+  ingressClassName: kong
+  rules:
+    - http:
+        paths:
+          - pathType: Prefix
+            path: /user-ms
+            backend:
+              service:
+                name: user-service-svc
+                port:
+                  number: 8091
+          - pathType: Prefix
+            path: /post-ms
+            backend:
+              service:
+                name: user-service-svc
+                port:
+                  number: 8081

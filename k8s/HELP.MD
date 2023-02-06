@@ -31,13 +31,21 @@ Open new tab on `bash/terminal` in order to run port-forward.
 ```sh
 bash post-forward.sh
 ```
+
+##
+
+Open new tab on `bash/terminal` in order to run port-forward.
+```sh
+kubectl apply -f lb.yaml --namespace dev
+```
+
 #
 ## Development server addresses
 
-| Services     | Ports |
-|--------------|-------|
-| Post-service | 8081  |
-| User-service | 8091  |
+| Services     | Ports                    |
+|--------------|--------------------------|
+| Post-service | localhost:8080/post-ms/* |
+| User-service | localhost:8080/user-ms/* |
 
 
 Feedbacks:  

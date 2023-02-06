@@ -10,7 +10,7 @@
 
 
   <artifactId>post-service</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.2</version>
   <name>post-service</name>
   <description>L&amp;D session k8s cource. Post service</description>
 
@@ -33,6 +33,7 @@
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
+      <version>42.3.8</version>
       <scope>runtime</scope>
     </dependency>
 

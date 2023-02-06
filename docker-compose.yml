@@ -1,8 +1,6 @@
 version: '3.8'
 
 services:
-
-
   pg_user:
     container_name: pg_user
     image: postgres
@@ -35,8 +33,8 @@ services:
       - pg_user
       - pg_post
 
-  user-service:
-    container_name: user_service
+  user-service-svc:
+    container_name: user-service-svc
     image: epamshorasulshoazimov/user-service:1.0.0
     restart: on-failure
     env_file:
@@ -46,8 +44,8 @@ services:
     ports:
       - '0.0.0.0:8091:8091'
 
-  post-service:
-    container_name: post_service
+  post-service-svc:
+    container_name: post-service-svc
     image: epamshorasulshoazimov/post-service:1.0.0
     restart: on-failure
     env_file:

@@ -7,10 +7,12 @@ spring:
 
   datasource:
     username: epam_user
-    url: jdbc:postgresql://localhost:54321/user_db
+    url: jdbc:postgresql://host.docker.internal:5432/user_db
     password: epam
   jpa:
     show-sql: 'true'
     hibernate:
       ddl-auto: update
-
+info:
+  app:
+    version: '@project.version@'

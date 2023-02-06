@@ -7,6 +7,12 @@ spec:
   selector:
     matchLabels:
       app: post-service-app
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
   template:
     metadata:
       labels:
@@ -14,7 +20,7 @@ spec:
     spec:
       containers:
         - name: post-service-app
-          image: epamshorasulshoazimov/post-service:1.0.0
+          image: epamshorasulshoazimov/post-service:1.0.1
           imagePullPolicy: Always
           ports:
             - containerPort: 8081
@@ -23,3 +29,20 @@ spec:
                 name: post-app-secrets
             - configMapRef:
                 name: post-app-config
+
+          livenessProbe:
+            httpGet:
+              path: /version
+              port: 8081
+            failureThreshold: 2
+            periodSeconds: 60
+            terminationGracePeriodSeconds: 60
+
+          readinessProbe:
+            periodSeconds: 15
+            timeoutSeconds: 5
+            successThreshold: 2
+            failureThreshold: 2
+            httpGet:
+              path: /version
+              port: 8081

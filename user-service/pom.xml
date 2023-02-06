@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>user-service</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <name>user-service</name>
   <description>L&amp;D session k8s cource. User service</description>
 
@@ -38,6 +38,7 @@
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
+      <version>42.3.8</version>
       <scope>runtime</scope>
     </dependency>
 
