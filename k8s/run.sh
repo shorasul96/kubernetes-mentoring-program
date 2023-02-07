@@ -1,5 +1,5 @@
 #!/bin/bash
-echo -e "\n* Environment variable DEV in process creating"
+echo -e "\n* Environment variable in process creating"
 kubectl apply -f namespaces.yml;
 
 echo -e "\n* PSQL & Redis in process creating"

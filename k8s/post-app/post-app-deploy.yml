@@ -3,11 +3,11 @@ kind: Deployment
 metadata:
   name: post-service-app
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: post-service-app
-  minReadySeconds: 10
+  minReadySeconds: 15
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -32,17 +32,16 @@ spec:
 
           livenessProbe:
             httpGet:
-              path: /version
+              path: /actuator/health
               port: 8081
             failureThreshold: 2
-            periodSeconds: 60
-            terminationGracePeriodSeconds: 60
+            periodSeconds: 30
+            terminationGracePeriodSeconds: 30
 
           readinessProbe:
-            periodSeconds: 15
-            timeoutSeconds: 5
-            successThreshold: 2
-            failureThreshold: 2
             httpGet:
-              path: /version
+              path: /actuator/health
               port: 8081
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            successThreshold: 1

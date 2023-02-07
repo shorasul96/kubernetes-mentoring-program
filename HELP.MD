@@ -18,7 +18,29 @@ docker push epamshorasulshoazimov/post-service:1.0.2
 
 ```sh
 cd k8s/post-app/
-kubectl apply -f post-app-deploy.yml -n kong --record
-kubectl -n kong set image deployment.apps/post-service-app post-service-app=epamshorasulshoazimov/post-service:1.0.2
+kubectl apply -f post-app-deploy.yml -n kong 
+kubectl -n kong set image deployment.apps/post-service-app post-service-app=epamshorasulshoazimov/post-service:1.0.0
+```
+
+### History of rolling out
+
+```sh
+# Watch update status for deployment “post-service”:
+kubectl rollout status deployment.apps/post-service-app -n kong
+
+# Pause deployment on “post-service”:
+kubectl rollout pause deployment.apps/post-service-app -n kong
+
+# Resume deployment on “post-service”:
+kubectl rollout resume deployment.apps/post-service-app -n kong
+
+# View rollout history on “post-service”:
+kubectl rollout history deployment.apps/post-service-app -n kong
+
+# Undo most recent update on “post-service”:
+kubectl rollout undo deployment.apps/post-service-app -n kong
+
+# Rollback to specific revision on “post-service”:
+kubectl rollout undo deployment.apps/post-service-app -n kong --to-revision=1.0.1
 ```
 
