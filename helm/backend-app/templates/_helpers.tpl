@@ -36,8 +36,8 @@ Common labels
 {{- define "backend-app.labels" -}}
 helm.sh/chart: {{ include "backend-app.chart" . }}
 {{ include "backend-app.selectorLabels" . }}
-{{- if .Chart.AppVersion }}
-app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- if .Values.serviceApp.image.tag }}
+app.kubernetes.io/version: {{ .Values.serviceApp.image.tag }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
@@ -48,6 +48,8 @@ Selector labels
 {{- define "backend-app.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "backend-app.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/current_date: {{ now | htmlDate }}
+app.kubernetes.io/version: {{ .Release.version }}
 {{- end }}
 
 {{/*

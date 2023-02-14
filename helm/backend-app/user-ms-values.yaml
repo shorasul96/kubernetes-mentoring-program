@@ -1,9 +1,9 @@
 appConfig:
   springApplicationUserServiceUrl: http://user-service-svc:8091/api/users
-  springDatasourceUrl: jdbc:postgresql://postgresql:5432/user_db
+  springDatasourceUrl: jdbc:postgresql://user-psql:5432/user_db
   springDatasourceUsername: epam_user
 appSecrets:
-  springDatasourcePassword: "epam"
+  springDatasourcePassword: "user_password"
 kubernetesClusterDomain: cluster.local
 serviceApp:
   containerPort: 8091

@@ -72,6 +72,7 @@
     <module>user-service</module>
     <module>core-api-parent</module>
     <module>k8s</module>
+    <module>helm</module>
   </modules>
 
 </project>

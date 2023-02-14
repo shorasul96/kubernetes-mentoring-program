@@ -3,14 +3,14 @@ appConfig:
   springDatasourceUrl: jdbc:postgresql://postgresql:5432/post_db
   springDatasourceUsername: epam_post
 appSecrets:
-  springDatasourcePassword: "epam"
+  springDatasourcePassword: "post_password"
 kubernetesClusterDomain: cluster.local
 serviceApp:
   containerPort: 8081
   image:
     repository: epamshorasulshoazimov/post-service
     pullPolicy: Always
-    tag: 1.0.1
+    tag: 1.0.2
   replicas: 3
 serviceSvc:
   ports:

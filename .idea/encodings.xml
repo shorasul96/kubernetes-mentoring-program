@@ -12,6 +12,8 @@
     <file url="file://$PROJECT_DIR$/core/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/core/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/gateway-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/helm/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/helm/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/k8s/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/k8s/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/post-service/src/main/java" charset="UTF-8" />
