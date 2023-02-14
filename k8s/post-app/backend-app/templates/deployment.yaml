@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "backend-app.fullname" . }}-deploy
+  labels:
+  {{- include "backend-app.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.serviceApp.replicas }}
+  selector:
+    matchLabels:
+      app: {{ include "backend-app.fullname" . }}-deploy
+    {{- include "backend-app.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "backend-app.fullname" . }}-deploy
+      {{- include "backend-app.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - env:
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ .Values.kubernetesClusterDomain }}
+        envFrom:
+        - secretRef:
+            name: {{ include "backend-app.fullname" . }}-app-secrets
+        - configMapRef:
+            name: {{ include "backend-app.fullname" . }}-app-config
+        image: {{ .Values.serviceApp.image.repository }}:{{ .Values.serviceApp.image.tag
+          | default .Chart.AppVersion }}
+        imagePullPolicy: {{ .Values.serviceApp.image.pullPolicy }}
+        livenessProbe:
+          failureThreshold: 2
+          httpGet:
+            path: /actuator/health
+            port: {{ .Values.serviceApp.containerPort }}
+          periodSeconds: 30
+          terminationGracePeriodSeconds: 30
+        name: {{ include "backend-app.fullname" . }}-deploy
+        ports:
+        - containerPort: {{ .Values.serviceApp.containerPort }}
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: {{ .Values.serviceApp.containerPort }}
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          successThreshold: 1
+        resources: {}

@@ -1,0 +1,23 @@
+appConfig:
+  springApplicationUserServiceUrl: http://user-service-svc:8091/api/users
+  springDatasourceUrl: jdbc:postgresql://postgresql:5432/user_db
+  springDatasourceUsername: epam_user
+appSecrets:
+  springDatasourcePassword: "epam"
+kubernetesClusterDomain: cluster.local
+serviceApp:
+  containerPort: 8091
+  image:
+    repository: epamshorasulshoazimov/user-service
+    pullPolicy: Always
+    tag: 1.0.1
+  replicas: 3
+serviceSvc:
+  ports:
+  - name: http
+    port: 8091
+    targetPort: 8091
+  type: ClusterIP
+
+fullnameOverride: "user-ms"
+nameOverride: "user-ms"

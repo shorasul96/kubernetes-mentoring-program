@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "backend-app.fullname" . }}-service-svc
+  labels:
+  {{- include "backend-app.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.serviceSvc.type }}
+  selector:
+    app: post-service-app
+  {{- include "backend-app.selectorLabels" . | nindent 4 }}
+  ports:
+	{{- .Values.serviceSvc.ports | toYaml | nindent 2 -}}
