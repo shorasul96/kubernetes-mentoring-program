@@ -9,7 +9,7 @@ helm install -f backend-app/user-ms-values.yaml user-ms ./backend-app/ -n kong
 helm install -f backend-app/post-ms-values.yaml post-ms ./backend-app/ -n kong
 ```
 
-## Replication for dev env
+## Or Replication with replication setups
 
 ```sh
 helm install -f backend-app/user-ms-values.yaml user-ms ./backend-app/ -n kong --set serviceApp.replicas=5
